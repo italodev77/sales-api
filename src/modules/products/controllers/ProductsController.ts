@@ -43,9 +43,9 @@ export default class ProductsController {
     ): Promise<Response> {
         const { name, price, quantity } = request.body;
 
-        const createProduct = await new CreateProductService();
+        const createProduct = new CreateProductService();
 
-        const product = createProduct.execute({ name, price, quantity });
+        const product = await createProduct.execute({ name, price, quantity });
 
         return response.json(product);
     }

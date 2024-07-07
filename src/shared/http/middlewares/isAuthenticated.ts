@@ -28,6 +28,10 @@ export default function isAuthenticated(
 
         const { sub } = decodeToken as ITokenPayload;
 
+        request.user = {
+            id: sub,
+        };
+
         return next();
     } catch {
         throw new AppError('Invalid JWT token.');

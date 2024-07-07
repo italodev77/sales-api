@@ -3,14 +3,19 @@ import UsersRepository from '../typeorm/repositories/UsersRepository';
 import User from '../typeorm/entities/User';
 import { compare, hash } from 'bcryptjs';
 import AppError from '@shared/errors/AppError';
+import { sign } from 'jsonwebtoken';
 
 interface IRequest {
     email: string;
     password: string;
 }
+interface IResponse {
+    user: User;
+    token: string;
+}
 
 class CreateSessionsService {
-    public async execute({ email, password }: IRequest): Promise<User> {
+    public async execute({ email, password }: IRequest): Promise<IResponse> {
         const usersRepository = getCustomRepository(UsersRepository);
 
         const user = await usersRepository.findByEmail(email);
@@ -24,7 +29,15 @@ class CreateSessionsService {
             throw new AppError('Incorrect email/password combination.', 401);
         }
 
-        return user;
+        const token = sign({}, '791a4f98212df004f2dfcf23462901ca', {
+            subject: user.id,
+            expiresIn: '1d',
+        });
+
+        return {
+            user,
+            token,
+        };
     }
 }
 

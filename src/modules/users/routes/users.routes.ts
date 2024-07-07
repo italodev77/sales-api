@@ -2,13 +2,13 @@ import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 import UsersControllers from '../controllers/UsersController';
 
-const userRouter = Router();
+const usersRouter = Router();
 
 const usersController = new UsersControllers();
 
-userRouter.get('/', usersController.index);
+usersRouter.get('/', usersController.index);
 
-userRouter.post(
+usersRouter.post(
     '/',
     celebrate({
         [Segments.BODY]: {
@@ -19,3 +19,5 @@ userRouter.post(
     }),
     usersController.create,
 );
+
+export default usersRouter;

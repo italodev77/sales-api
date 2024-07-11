@@ -8,7 +8,7 @@ import fs from 'fs';
 
 interface IRequest {
     user_id: string;
-    avatarFileName: string;
+    avatarFileName: string | undefined;
 }
 class UpdateUserAvatarService {
     public async execute({
